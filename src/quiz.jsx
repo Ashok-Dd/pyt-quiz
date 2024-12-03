@@ -1,6 +1,7 @@
 import { useEffect , useState } from "react"
 import { useName } from "./NameContext";
 import { useNavigate } from 'react-router-dom'
+import api from "./api";
 
 const Quiz = () => {
     const {name , setName} = useName()
@@ -343,7 +344,7 @@ const Quiz = () => {
 
     const checkStatus = async () => {
         try {
-          const response = await fetch("https://pyt-quiz-backend.onrender.com/check-status", {
+          const response = await fetch(api + "/check-status", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

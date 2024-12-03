@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import api from "./api";
 
 const Landing = () => {
     const [name, setName] = useState('');
@@ -22,7 +23,7 @@ const Landing = () => {
         }
         setLoading(true)
         try {
-            const response = await fetch('https://pyt-quiz-backend.onrender.com/register', {
+            const response = await fetch(api + '/register', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -55,7 +56,7 @@ const Landing = () => {
         setLoading(true)
 
         try {
-            const response = await fetch('https://pyt-quiz-backend.onrender.com/verify-otp', {
+            const response = await fetch(api + '/verify-otp', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"

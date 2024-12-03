@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { data, useNavigate } from "react-router-dom";
+import api from "./api";
 
 const Results = () => {
     const [showLB, setShowLB] = useState(false);
@@ -17,15 +18,15 @@ const Results = () => {
     } , [])
 
 
-   
-
     
     useEffect(() => {
         const fetchLeaderboard = async () => {
             try {
-                const response = await fetch('https://pyt-quiz-backend.onrender.com/leaderboard');
+                const response = await fetch(api + '/leaderboard');
                 const data = await response.json();
-                setUsers(data);
+                const filteredUsers = data.filter(user => user.marks !== undefined && user.marks !== null);
+
+                setUsers(filteredUsers);
             } catch (error) {
 
             }
@@ -35,9 +36,9 @@ const Results = () => {
     }, []);
 
     useEffect(() => {
-        const saveMarks = async () => {
+        const saveMarksAndUpdateLeaderboard = async () => {
             try {
-                const response = await fetch('https://pyt-quiz-backend.onrender.com/save-marks', {
+                const response = await fetch(api + '/save-marks', {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json"
@@ -45,14 +46,35 @@ const Results = () => {
                     body: JSON.stringify({ email, marks })
                 });
 
-                
-            } catch (error) {
+                if (response.ok) {
+                    // Update the user's marks in the leaderboard after saving
+                    setUsers(prevUsers => {
+                        const updatedUsers = [...prevUsers];
+                        const userIndex = updatedUsers.findIndex(user => user.email === email);
 
+                        if (userIndex !== -1) {
+                            updatedUsers[userIndex].marks = marks;
+                        } else {
+                            // If the user is not already in the leaderboard, add them
+                            updatedUsers.push({ name, email, marks });
+                        }
+
+                        // Sort the updated users by marks in descending order
+                        updatedUsers.sort((a, b) => b.marks - a.marks);
+
+                        return updatedUsers;
+                    });
+                }
+            } catch (error) {
+                console.error("Error saving marks:", error);
             }
         };
 
-        saveMarks();
-    }, [email, marks]);
+        if (email && !isNaN(marks)) {
+            saveMarksAndUpdateLeaderboard();
+        }
+    }, [email, marks, name]);
+
 
     const handleLeaderboardToggle = () => {
         setShowLB(prev => !prev);
