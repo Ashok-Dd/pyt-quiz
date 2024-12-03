@@ -23,7 +23,7 @@ const Results = () => {
     useEffect(() => {
         const fetchLeaderboard = async () => {
             try {
-                const response = await fetch('http://localhost:9000/leaderboard');
+                const response = await fetch('https://pyt-quiz-backend.onrender.com/leaderboard');
                 const data = await response.json();
                 setUsers(data);
             } catch (error) {
@@ -37,7 +37,7 @@ const Results = () => {
     useEffect(() => {
         const saveMarks = async () => {
             try {
-                const response = await fetch('http://localhost:9000/save-marks', {
+                const response = await fetch('https://pyt-quiz-backend.onrender.com/save-marks', {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json"

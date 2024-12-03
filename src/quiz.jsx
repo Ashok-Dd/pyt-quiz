@@ -343,7 +343,7 @@ const Quiz = () => {
 
     const checkStatus = async () => {
         try {
-          const response = await fetch("http://localhost:9000/check-status", {
+          const response = await fetch("https://pyt-quiz-backend.onrender.com/check-status", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

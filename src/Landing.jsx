@@ -22,7 +22,7 @@ const Landing = () => {
         }
         setLoading(true)
         try {
-            const response = await fetch('http://localhost:9000/register', {
+            const response = await fetch('https://pyt-quiz-backend.onrender.com/register', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -55,7 +55,7 @@ const Landing = () => {
         setLoading(true)
 
         try {
-            const response = await fetch('http://localhost:9000/verify-otp', {
+            const response = await fetch('https://pyt-quiz-backend.onrender.com/verify-otp', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
